@@ -1,187 +1,51 @@
-
+//console.log(event.target.name); // Name des Eingabefeldes
+//console.log(event.target.value); // Wert des Eingabefeldes
+// value={player.name} hängt den dynamisch erzeugten value an
 import { useState } from 'react';
 import styled from 'styled-components';
-import Soccerfieldimg from '../src/images/soccerfield.png';
-
-//
-
-//anlegen eines Prototyps, damit alle properties vorhanden sind
+import PlayerForm from './PlayerForm';
+import PlayerCard from './PlayerCard';
 
 function App() {
+const [players, setPlayers] = useState([]); // state für die Spieler
 
-const initialPlayerState = { 
-  name: '',
-  price: '',
-  free_transfer: false,
-  position: '',
-  email: '',
-};
-
-const [player, setPlayer] = useState([]);
-const [allPlayers, setAllPlayers] = useState([]);
-
-function addPlayer(e) {
-  e.preventDefault();
-  alert(`${player.name} ${player.price}`);
-};
-
-
-
-
-  function updatePlayer(event) {
-    const fieldName= event.target.name;
-    let fieldValue= event.target.value;
-  
-    if (event.target.type === 'checkbox') { // checkbox übermittelt keinen value, deshalb immer im State speichern
-      fieldValue = event.target.checked; // ist true oder false
-    }
-  
-  
-    setPlayer({...player, [fieldName]: fieldValue }); // property (key) dynamisch erzeugt, deshalb []
-  
-    //console.log(event.target.name); // Name des Eingabefeldes
-    //console.log(event.target.value); // Wert des Eingabefeldes
+  function addPlayer(player) {
+    setPlayers([...players, player]); // die Formulareingaben werden hier hineingeschoben
   }
-  
-  // value={player.name} hängt den dynamisch erzeugten value an
 
   return (
     <div>
-      <h1>Add new player:</h1>
-      <Form onSubmit={addPlayer}>
-        <label>Player Name</label>
-          <input 
-            type="text" 
-            name="name" 
-            onChange={updatePlayer} 
-            value={player.name} 
-          />
-        
-        <label>Transfer Price</label>
-          <input 
-            type="text" 
-            name="price"  
-            onChange={updatePlayer} 
-            value={player.price} 
-            disabled={player.free_transfer ? true : false }
-          />
-
-        <label>On a free transfer</label>
-          <input 
-            type="checkbox" 
-            name="free_transfer"   
-            onChange={updatePlayer} 
-            value={player.free_transfer}
-            disabled={player.price ===' '}
-          />
-
-        <label htmlFor="club">Club</label>  
-          <select id="club" name="club">
-            <option value="select"> ---Please select --- </option>
-            <option value="fc_bayern">FC Bayern</option>
-            <option value="sv_werder">SV Werder</option>
-            <option value="vfb_stuttgart">VFB Stuttgart</option>
-            <option value="rb_leipzig">RB Leipzig</option>
-            <option value="st_pauli">FC St. Pauli</option>
-            <option value="fc_koeln">1. FC Köln</option>
-          </select>
-
-          <label htmlFor="position">Position</label>
-          <Position>
-            <label>
-            <input 
-              type="radio" 
-              value="striker" 
-              name="position"  
-              onChange={updatePlayer}  
-              checked= {player.position === 'striker'}/> {' '} Striker
-            </label>
-            <label>
-            <input 
-              type="radio" 
-              value="midfield" 
-              name="position"   
-              onChange={updatePlayer} 
-              checked= {player.position === 'midfield'}/> {' '} Midfield
-            </label>
-            <label>
-            <input 
-              type="radio" 
-              value="defence" 
-              name="position"   
-              onChange={updatePlayer} 
-              checked= {player.position === 'defence'}/> {' '} Defense
-            </label>
-            <label>
-            <input 
-              type="radio" 
-              value="goalie" 
-              name="position"   
-              onChange={updatePlayer} 
-              checked= {player.position === 'goalie'}/> {' '} Goalie
-            </label>
-            </Position>
-
-          <label htmlFor="email">Contact</label>
-            <input 
-              type="text" 
-              name="email" />
-          <Buttons>
-            <Button
-              isPrimary 
-              type="submit">
-                Add player
-              </Button>
-            <Button onClick={() => setPlayer(initialPlayerState) }
-              type="reset">
-              Cancel
-            </Button>
-          </Buttons>
-      </Form>
+      <h1>German Soccer Transfer:</h1>
+      <Grid>
+      <PlayerForm onAddPlayer={addPlayer}/>
+      <Players>
+        {players.map((player) => (
+            <PlayerCard player={player} />
+          ))}
+      </Players>
+      </Grid>
     </div>
   );
 }
 
 
-const Form = styled.form`
+const Grid = styled.div`
   display: grid;
-  gap: 0.5rem;
-  margin: 0 auto;
-  
-  label {
-    font-weight: bold;
-    font-size: 20px;
-    color: green;
-  }
+  grid-template-columns: 1 fr;
 
-  input,
-  select {
-    font-size: 1.25rem;
-  }
-
-  input[type='checkbox'],
-  input[type='radio'] {
-    transform: scale()(1.4);
-  }
-  `;
-
-const Position = styled.section`
-  display: flex;
   gap: 1rem;
+
+  @media (min-width: 576px) {
+    grid-template-columns: 1fr 2fr;
+  }
 `;
 
-const Buttons = styled.section`
-  background-image: url(${Soccerfieldimg});
+const Players = styled.div`
   display:flex;
-  gap: 1rem;
-  padding: 0.5rem;
+  flex-wrap: wrap;;
+  gap: 0.5rem;
 `;
 
-const Button = styled.button`
-  padding: 1rem;
-  border-radius: 5rem;
-  background: white;
-  cursor: pointer;
-`;
+
 
 export default App;
