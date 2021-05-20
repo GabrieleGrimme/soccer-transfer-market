@@ -200,10 +200,11 @@ padding: 0.5rem;
 `;
 
 const Button = styled.button`
-padding: 1rem;
 border-radius: 5rem;
+border: 1px solid green;
 background: white;
 cursor: pointer;
+padding: 0.2rem;
 `;
 
 const ErrorBox = styled.div`
