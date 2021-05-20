@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import  Soccerfieldimg  from '../src/images/soccerfield.png';
 
 
 export default createGlobalStyle`
@@ -8,13 +7,12 @@ export default createGlobalStyle`
   }
 
 body {
-    
-    background-image: url(${Soccerfieldimg});
     font-size: 16px;
     font-family: sans-serif;
   }
 
   h1 {
+      color: green;
       text-align: center;
   }
   `;

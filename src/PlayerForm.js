@@ -1,5 +1,8 @@
 import styled from 'styled-components/macro';
 import { useState } from 'react';
+import Tags from './Tags';
+import validatePlayer from './lib/validations';
+
 //import Soccerfieldimg from '../src/images/soccerfield.png';
 
 export default function PlayerForm({ onAddPlayer }) {
@@ -10,31 +13,53 @@ const initialPlayerState = { //anlegen eines Prototyps für alle properties (key
     free_transfer: false,
     position: '',
     email: '',
-    club: ''
+    club: '',
+    skills: []
   };
   
-  const [player, setPlayer] = useState([]);
+  const [player, setPlayer] = useState(initialPlayerState);
+  const [isError, setIsError] = useState(false);
 
     function updatePlayer(event) {
-        const fieldName= event.target.name;
-        let fieldValue= event.target.value;
+        const fieldName = event.target.name;
+        let fieldValue = event.target.value;
+  
   
         if (event.target.type === 'checkbox') { // checkbox übermittelt keinen value, deshalb immer im State speichern
             fieldValue = event.target.checked; // ist true oder false
     }
-  
+
     setPlayer({...player, [fieldName]: fieldValue }); // property (key) dynamisch erzeugt, deshalb []
+    
+  }
+
+  function updateSkills(skillsToAdd) {
+    setPlayer({...player, skills: [...player.skills, skillsToAdd]});
+    //setSkills([...skills, newSkill.toUpperCase()]); (vorher)
+  }
+  
+  function deleteSkill(skillToDelete) {
+    const skillsToKeep = player.skills.filter((skill) => skill !== skillToDelete);
+    setPlayer({...player, skills: skillsToKeep});
   }
 
   function handleFormSubmit(event) {
       event.preventDefault();
+
+    if (validatePlayer(player)) {
       onAddPlayer(player);
+      setPlayer(initialPlayerState); // Formular nach submit zurück auf Ausgangszustand setzen
+      setIsError(false); // s. error-state -- wenn kein Fehler -> submit
+    } else {
+      setIsError(true); // s. error-state -- wenn Fehler -> wirf Fehlermeldung aus errorBox
+    }
   } 
   
 return (
 
 <Form onSubmit={handleFormSubmit}>
-    <h3>Add a new Player</h3>
+    <h2>Add a new Player</h2>
+      {isError && <ErrorBox>You've got something wrong! Check your form!</ErrorBox>}
         <label>Player Name</label>
           <input 
             type="text" 
@@ -112,6 +137,12 @@ return (
             </label>
             </Position>
 
+            <Tags
+              tags={player.skills}
+              onUpdateTags={updateSkills}
+              onDeleteTag={deleteSkill}
+        />
+
           <label htmlFor="email">Contact</label>
             <input 
               type="text" 
@@ -143,6 +174,7 @@ label {
   font-weight: bold;
   font-size: 20px;
   color: green;
+  padding-top: 5px;
 }
 
 input,
@@ -172,4 +204,12 @@ padding: 1rem;
 border-radius: 5rem;
 background: white;
 cursor: pointer;
+`;
+
+const ErrorBox = styled.div`
+  background: red;
+  border-radius: 0.5rem;
+  color: ivory;
+  font-weight: bolder;
+  padding: 1rem;
 `;

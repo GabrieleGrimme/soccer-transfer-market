@@ -8,6 +8,7 @@ import PlayerCard from './PlayerCard';
 
 function App() {
 const [players, setPlayers] = useState([]); // state für die Spieler
+  
 
   function addPlayer(player) {
     setPlayers([...players, player]); // die Formulareingaben werden hier hineingeschoben
