@@ -38,14 +38,15 @@ function App() {
 
   return (
     <div>
-      <header>
+      <Header>
+        <NavLink to="/shoppingcart">
+          <Button> Go to selected Player! </Button>
+        </NavLink>
         <NavLink exact to="/">
           <h1>German Soccer Transfer:</h1>
         </NavLink>
-        <NavLink exact to="/shoppingcart">
-          <Button> Player to Transfer! </Button>
-        </NavLink>
-      </header>
+        
+      </Header>
 
       <Switch>
         <Route exact path="/">
@@ -66,11 +67,15 @@ function App() {
   );
 }
 
+const Header = styled.header`
+  display: grid;
+  grid-template-rows: 1fr;
+  gap: 1rem;
+  `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1 fr;
-
+  grid-template-columns: 1fr;
   gap: 1rem;
 
   @media (min-width: 576px) {

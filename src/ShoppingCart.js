@@ -23,6 +23,14 @@ export default function ShoppingCart({playersInShoppingCart}) {
 const CartWrapper = styled.article`
     display: grid;
     grid-template-columns: 1fr 1fr;
+    border: 2px solid green;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin: auto 0;
+
+    h3 {
+        color: green;
+    }
 `;
 const NameWrapper = styled.section`
 

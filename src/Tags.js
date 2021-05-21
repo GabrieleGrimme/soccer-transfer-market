@@ -1,3 +1,5 @@
+// Player Skills
+
 import { useState } from 'react';
 import styled from 'styled-components/macro';
 export default function Tags({ tags, onUpdateTags, onDeleteTag }) {
@@ -51,6 +53,7 @@ const Tag = styled.section`
   font-family: sans-serif;
   padding: 0.5rem;
   margin: 0.5rem;
+  
   flex-direction: row-reverse;
   input {
     border: 1px groove green;
